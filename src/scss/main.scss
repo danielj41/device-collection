@@ -1,0 +1,9 @@
+body {
+  .item {
+    color: red;
+
+    &:nth-child(2n) {
+      color: blue;
+    }
+  }
+}

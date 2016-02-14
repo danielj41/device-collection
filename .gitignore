@@ -1,0 +1,6 @@
+*.DS_Store
+/public/css/*.css
+/public/js/*.js
+/node_modules
+/.sass-cache
+/pages.sh
