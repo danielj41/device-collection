@@ -1,0 +1,10 @@
+
+<input type="text" ng-model="devices.textInput">
+<button ng-click="devices.add(devices.textInput)">add</button>
+
+<p ng-repeat="item in devices.viewModel track by item.id" class="item">
+  {{item.id}}
+  <button ng-click="devices.remove($index)">
+    remove
+  </button>
+</p>
