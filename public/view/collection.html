@@ -1,9 +1,20 @@
 
-<input type="text" ng-model="devices.textInput">
-<button ng-click="devices.add(devices.textInput)">add</button>
+<h1>Search</h1>
+<input type="text" ng-model="devices.searchQuery">
+<button ng-click="devices.search(devices.searchQuery)">search</button>
+<p ng-repeat="result in devices.results track by result.wikiid" class="item">
+  {{result.wikiid}} - {{result.title}}
+  <button ng-if="!devices.viewModelSet[result.wikiid]" ng-click="devices.add(result)">
+    add
+  </button>
+  <button ng-if="devices.viewModelSet[result.wikiid]" ng-click="devices.removeById(result.wikiid)">
+    remove
+  </button>
+</p>
 
-<p ng-repeat="item in devices.viewModel track by item.id" class="item">
-  {{item.id}}
+<h1>Your devices</h1>
+<p ng-repeat="item in devices.viewModelList track by item.wikiid" class="item">
+  {{item.wikiid}} - {{item.title}}
   <button ng-click="devices.remove($index)">
     remove
   </button>
