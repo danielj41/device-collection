@@ -1,31 +1,37 @@
 
-<div ng-if="devices.isSearching">
-  <h1>Search Results</h1>
-  <button ng-click="devices.endSearch()">back to my devices</button><br>
-  <input type="text" ng-model="devices.searchQuery">
-  <button ng-click="devices.search(devices.searchQuery)">search</button>
-  <p ng-repeat="item in devices.results track by item.id" class="item">
-    {{item.title}}
-    <img ng-if="item.image && item.image.thumbnail" ng-src="{{item.image.thumbnail}}">
-    <button ng-if="!(devices.viewModelSet[item.namespace] && devices.viewModelSet[item.namespace][item.title])" ng-click="devices.add(item)">
-      add
-    </button>
-    <button ng-if="devices.viewModelSet[item.namespace] && devices.viewModelSet[item.namespace][item.title]" ng-click="devices.removeById(item.namespace, item.title)">
-      remove
-    </button>
-  </p>
+<div id="header">
+  <div>
+    <div class="header-section" ng-if="devices.isSearching"><button class="navigation" ng-click="devices.endSearch()">&laquo; My Devices</button><h1>Search Results</h1></div>
+    <div class="header-section" ng-if="!devices.isSearching"><h1>My Devices</h1></div>
+    <div class="header-section"><form ng-submit="devices.search($event, devices.searchQuery)"><input type="text" ng-model="devices.searchQuery"><input type="submit" value="Search"></form></div>
+  </div>
 </div>
 
-<div ng-if="!devices.isSearching">
-  <h1>Search</h1>
-  <input type="text" ng-model="devices.searchQuery">
-  <button ng-click="devices.search(devices.searchQuery)">search</button>
-  <h1>Your devices</h1>
-  <p ng-repeat="item in devices.viewModelList track by item.id" class="item">
-    {{item.title}}
-    <img ng-if="item.image && item.image.thumbnail" ng-src="{{item.image.thumbnail}}">
-    <button ng-click="devices.remove($index)">
-      remove
-    </button>
-  </p>
+<div id="content">
+  <h2 ng-if="devices.isSearching && !devices.results.length">No Results</h2>
+
+  <ul class="device-list" ng-if="devices.isSearching">
+    <li ng-repeat="item in devices.results track by item.id" class="item">
+      <div>
+        <div class="thumbnail">
+          <img ng-if="item.image && item.image.thumbnail" ng-src="{{item.image.thumbnail}}">
+        </div>
+        <h2>{{item.title}}</h2>
+        <button ng-if="!devices.viewModelSet[item.id]" ng-click="devices.add(item)">Add</button>
+        <button ng-if="devices.viewModelSet[item.id]" ng-click="devices.removeById(item.namespace, item.title)">Remove</button>
+      </div>
+    </li>
+  </ul>
+
+  <ul class="device-list" ng-if="!devices.isSearching">
+    <li ng-repeat="item in devices.viewModelList track by item.id" class="item animate-item">
+      <div>
+        <div class="thumbnail">
+          <img ng-if="item.image && item.image.thumbnail" ng-src="{{item.image.thumbnail}}">
+        </div>
+        <h2>{{item.title}}</h2>
+        <button ng-click="devices.remove($index)">Remove</button>
+      </div>
+    </li>
+  </ul>
 </div>

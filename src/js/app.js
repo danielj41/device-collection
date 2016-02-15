@@ -1,5 +1,5 @@
-angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
-  .config(['$routeProvider', function($routeProvider) {
+angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki', 'ngAnimate'])
+  .config(['$routeProvider', '$animateProvider', function($routeProvider, $animateProvider) {
     $routeProvider
       .when('/', {
         controller: 'DeviceCollectionController as devices',
@@ -14,6 +14,7 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
       .otherwise({
         redirectTo: '/'
       });
+    $animateProvider.classNameFilter(/animate-/);
   }])
 
 
@@ -62,8 +63,8 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
   }])
 
 
-  .controller('DeviceCollectionController', ['devices', '$location', '$scope',
-  function(devices, $location, $scope) {
+  .controller('DeviceCollectionController', ['devices', '$location', '$scope', '$window',
+  function(devices, $location, $scope, $window) {
     var controller = this;
 
     var initialize = function() {
@@ -95,8 +96,7 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
       controller.viewModelList = list;
       controller.viewModelSet = {};
       list.forEach(function(item) {
-        controller.viewModelSet[item.namespace] = controller.viewModelSet[item.namespace] || {};
-        controller.viewModelSet[item.namespace][item.title] = true;
+        controller.viewModelSet[item.id] = true;
       });
     };
 
@@ -121,12 +121,16 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
       }
     };
 
-    controller.search = function(query) {
+    controller.search = function($event, query) {
+      $event.preventDefault();
+      $event.stopPropagation();
       $location.search({q: query});
+      $window.scrollTo(0, 0);
     };
 
     controller.endSearch = function() {
       $location.search({q: null});
+      $window.scrollTo(0, 0);
     };
 
     initialize();
