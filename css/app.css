@@ -1,4 +1,4 @@
 body .item {
-  color: red; }
+  color: #00a; }
   body .item:nth-child(2n) {
     color: blue; }
