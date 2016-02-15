@@ -35,6 +35,7 @@ angular.module('storage', [])
         item.toJSON = list.itemToJSON;
       });
       this.data = data;
+      return this;
     };
 
     List.prototype.insert = function(item, index) {
@@ -53,7 +54,6 @@ angular.module('storage', [])
     // list's data after successfully saving it.
     List.prototype.save = function() {
       storage[this.name] = $window.JSON.stringify(this.data);
-
       // return a promise, so we can replace it with async storage without
       // changing this interface
       return $q.resolve(this.getArray());
@@ -62,14 +62,21 @@ angular.module('storage', [])
     // myList.insert(-1, myItem).remove(4).save().then(...)
 
 
-    // usage: PersistentList().then(function(yourNewList){...})
-    return function(name) {
-      var list = new List(name);
+    // usage: PersistentList(...).then(function(yourNewList){...})
+    return function(name, toJSON, filter) {
+      var list = new List(name, toJSON);
 
       // load previously saved data if it can be parsed
       try {
-        list.setData($window.JSON.parse(storage[list.name]));
-      } catch(e) {}
+        if(storage[list.name]) {
+          // filter is for custom parsing, so the user can add additional
+          // attributes on load.
+          list.setData(filter($window.JSON.parse(storage[list.name])));
+        }
+      } catch(e) {
+        // any problems loading it, just reset local storage
+        delete storage[list.name];
+      }
 
       return $q.resolve(list);
     };
