@@ -1,6 +1,8 @@
+// some sample css to make sure it's working
+
 body {
   .item {
-    color: red;
+    color: #00a;
 
     &:nth-child(2n) {
       color: blue;

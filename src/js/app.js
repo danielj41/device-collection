@@ -20,14 +20,29 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
         redirectTo: '/'
       });
   }])
-  .controller('DeviceCollectionController', ['deviceList', 'Dozuki',
-  function(deviceList, Dozuki) {
+  .controller('DeviceCollectionController', ['deviceList', 'Dozuki', '$location', '$scope',
+  function(deviceList, Dozuki, $location, $scope) {
     var controller = this;
     var dozuki = Dozuki('www.ifixit.com');
 
     var initialize = function() {
       setViewModel(deviceList.getArray());
       controller.results = [];
+      runSearchQuery();
+    };
+
+    // if the page was loaded with a query parameter q, then search
+    var runSearchQuery = function() {
+      controller.searchQuery = $location.search().q;
+      controller.isSearching = false;
+      if(controller.searchQuery) {
+        controller.isSearching = true;
+        dozuki.suggest.get(controller.searchQuery, 'device', 10, 0).then(function(response) {
+          controller.results = response.results;
+        }, function() {
+          // error handling here
+        });
+      }
     };
 
     // when the deviceList updates, get the data for the view
@@ -66,11 +81,11 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki'])
     };
 
     controller.search = function(query) {
-      dozuki.suggest.get(query, 'device', 10, 0).then(function(response) {
-        controller.results = response.results;
-      }, function() {
-        // error handling here
-      });
+      $location.search({q: query});
+    };
+
+    controller.endSearch = function() {
+      $location.search({q: null});
     };
 
     initialize();

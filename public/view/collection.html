@@ -1,21 +1,29 @@
 
-<h1>Search</h1>
-<input type="text" ng-model="devices.searchQuery">
-<button ng-click="devices.search(devices.searchQuery)">search</button>
-<p ng-repeat="result in devices.results track by result.wikiid" class="item">
-  {{result.wikiid}} - {{result.title}}
-  <button ng-if="!devices.viewModelSet[result.wikiid]" ng-click="devices.add(result)">
-    add
-  </button>
-  <button ng-if="devices.viewModelSet[result.wikiid]" ng-click="devices.removeById(result.wikiid)">
-    remove
-  </button>
-</p>
+<div ng-if="devices.isSearching">
+  <h1>Search Results</h1>
+  <button ng-click="devices.endSearch()">back to my devices</button><br>
+  <input type="text" ng-model="devices.searchQuery">
+  <button ng-click="devices.search(devices.searchQuery)">search</button>
+  <p ng-repeat="result in devices.results track by result.wikiid" class="item">
+    {{result.wikiid}} - {{result.title}}
+    <button ng-if="!devices.viewModelSet[result.wikiid]" ng-click="devices.add(result)">
+      add
+    </button>
+    <button ng-if="devices.viewModelSet[result.wikiid]" ng-click="devices.removeById(result.wikiid)">
+      remove
+    </button>
+  </p>
+</div>
 
-<h1>Your devices</h1>
-<p ng-repeat="item in devices.viewModelList track by item.wikiid" class="item">
-  {{item.wikiid}} - {{item.title}}
-  <button ng-click="devices.remove($index)">
-    remove
-  </button>
-</p>
+<div ng-if="!devices.isSearching">
+  <h1>Search</h1>
+  <input type="text" ng-model="devices.searchQuery">
+  <button ng-click="devices.search(devices.searchQuery)">search</button>
+  <h1>Your devices</h1>
+  <p ng-repeat="item in devices.viewModelList track by item.wikiid" class="item">
+    {{item.wikiid}} - {{item.title}}
+    <button ng-click="devices.remove($index)">
+      remove
+    </button>
+  </p>
+</div>
