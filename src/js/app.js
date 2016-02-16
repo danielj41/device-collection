@@ -77,14 +77,19 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki', 'ngAnimate'])
     var runSearchQuery = function() {
       controller.searchQuery = $location.search().q;
       controller.isSearching = false;
+      controller.searchStatus = 'none';
+
       if(controller.searchQuery) {
         controller.isSearching = true;
-        devices.api.suggest.get(controller.searchQuery, 'device', 10, 0).then(function(response) {
+        controller.searchStatus = 'loading';
+
+        devices.api.suggest.get(controller.searchQuery, 'device').then(function(response) {
+          controller.searchStatus = 'success';
           controller.results = response.results.map(function(result) {
             return devices.itemFromResponse(result);
           });
         }, function() {
-          // error handling here
+          controller.searchStatus = 'error';
         });
       }
     };
