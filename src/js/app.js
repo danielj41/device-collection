@@ -4,6 +4,7 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki', 'ngAnimate'])
       .when('/', {
         controller: 'DeviceCollectionController as devices',
         templateUrl: 'view/collection.html',
+        reloadOnSearch: false,
         resolve: {
           devices: ['deviceListFactory', function(deviceListFactory) {
             // load the list of devices before rendering the main view
@@ -63,8 +64,8 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki', 'ngAnimate'])
   }])
 
 
-  .controller('DeviceCollectionController', ['devices', '$location', '$scope', '$window',
-  function(devices, $location, $scope, $window) {
+  .controller('DeviceCollectionController', ['devices', '$location', '$scope', '$window', '$route',
+  function(devices, $location, $scope, $window, $route) {
     var controller = this;
 
     var initialize = function() {
@@ -130,11 +131,13 @@ angular.module('deviceApp', ['storage', 'ngRoute', 'dozuki', 'ngAnimate'])
       $event.preventDefault();
       $event.stopPropagation();
       $location.search({q: query});
+      $route.reload();
       $window.scrollTo(0, 0);
     };
 
     controller.endSearch = function() {
       $location.search({q: null});
+      $route.reload();
       $window.scrollTo(0, 0);
     };
 
