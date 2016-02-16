@@ -4,10 +4,11 @@ body {
   line-height: 1.7;
   color: black; }
 
-button, input[type=submit] {
+button.action, input[type=submit] {
+  font-family: 'Oxygen', sans-serif;
   background-color: #6C8896;
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   height: 24px;
   line-height: 24px;
   padding: 0 16px;
@@ -16,10 +17,10 @@ button, input[type=submit] {
   box-sizing: content-box;
   border-radius: 4px;
   letter-spacing: 1px;
-  margin-left: 20px;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-left: 10px;
   font-weight: normal; }
-  button:hover, input[type=submit]:hover {
+  button.action:hover, input[type=submit]:hover {
     background-color: #8A5B6C; }
 
 #header {
@@ -27,27 +28,40 @@ button, input[type=submit] {
   top: 0;
   left: 0;
   right: 0;
-  height: 150px;
+  height: 105px;
+  padding-top: 10px;
   background-color: white; }
   #header > div {
     width: 80%;
     max-width: 700px;
-    min-width: 300px;
+    min-width: 290px;
     margin: 0 auto;
-    height: 150px;
+    height: 105px;
     border-bottom: 1px solid #ccc; }
   #header .header-section {
     display: block;
-    text-align: center; }
+    text-align: center;
+    padding-top: 10px; }
     #header .header-section > div, #header .header-section button, #header .header-section h1 {
-      display: inline-block; }
-  #header h1 {
-    font-size: 130%;
-    font-weight: normal;
-    margin: 15px; }
+      display: inline-block;
+      margin: 0 10px; }
+    #header .header-section > h1, #header .header-section > button.navigation, #header .header-section > span.divider {
+      font-size: 16px;
+      font-weight: normal;
+      margin: 0 3px; }
+  #header button.navigation {
+    text-decoration: underline;
+    color: #00c;
+    font-family: 'Oxygen', sans-serif;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: transparent;
+    border: 0; }
+    #header button.navigation:hover {
+      color: #00f; }
   #header input[type=text] {
     font-family: 'Oxygen', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     width: 150px;
     height: 26px;
     padding: 0 4px;
@@ -60,10 +74,14 @@ button, input[type=submit] {
 #content {
   width: 75%;
   max-width: 450px;
-  min-width: 300px;
-  padding-top: 150px;
+  min-width: 280px;
+  padding-top: 120px;
   padding-bottom: 60px;
   margin: 0 auto; }
+  #content h3 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: normal; }
 
 .device-list {
   list-style-type: none;
